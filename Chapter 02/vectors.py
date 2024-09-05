@@ -23,6 +23,7 @@ def perimeter(vectors):
 def scale(scalar,v):
     return (scalar * v[0], scalar * v[1])
 
+
 def to_cartesian(polar_vector):
     length, angle = polar_vector[0], polar_vector[1]
     return (length*cos(angle), length*sin(angle))
@@ -38,3 +39,6 @@ def to_polar(vector):
     x, y = vector[0], vector[1]
     angle = atan2(y,x)
     return (length(vector), angle)
+
+def multiply(v, u):
+    return (v[0] * u[0], v[1] * u[1])

@@ -59,7 +59,7 @@ def extract_vectors(objects):
             raise TypeError("Unrecognized object: {}".format(object))
 
 def draw(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
-            width=6, save_as=None):
+            width=6, save_as=None, fixed_limits=False):
 
     all_vectors = list(extract_vectors(objects))
     xs, ys = zip(*all_vectors)
@@ -68,19 +68,25 @@ def draw(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
 
     #sizing
     if grid:
-        x_padding = max(ceil(0.05*(max_x-min_x)), grid[0])
-        y_padding = max(ceil(0.05*(max_y-min_y)), grid[1])
+        if fixed_limits:
+            plt.xlim(-20,
+                    20)
+            plt.ylim(-20,
+                    20)
+        else:
+            x_padding = max(ceil(0.05*(max_x-min_x)), grid[0])
+            y_padding = max(ceil(0.05*(max_y-min_y)), grid[1])
 
-        def round_up_to_multiple(val,size):
-            return floor((val + size) / size) * size
+            def round_up_to_multiple(val,size):
+                return floor((val + size) / size) * size
 
-        def round_down_to_multiple(val,size):
-            return -floor((-val - size) / size) * size
+            def round_down_to_multiple(val,size):
+                return -floor((-val - size) / size) * size
 
-        plt.xlim(floor((min_x - x_padding) / grid[0]) * grid[0],
-                ceil((max_x + x_padding) / grid[0]) * grid[0])
-        plt.ylim(floor((min_y - y_padding) / grid[1]) * grid[1],
-                ceil((max_y + y_padding) / grid[1]) * grid[1])
+            plt.xlim(floor((min_x - x_padding) / grid[0]) * grid[0],
+                    ceil((max_x + x_padding) / grid[0]) * grid[0])
+            plt.ylim(floor((min_y - y_padding) / grid[1]) * grid[1],
+                    ceil((max_y + y_padding) / grid[1]) * grid[1])
 
     if origin:
         plt.scatter([0],[0], color='k', marker='x')
