@@ -88,11 +88,6 @@ def exercise_2_27():
     u = (-1.34, 2.68)
     print(length(u))
 
-def to_cartesian(polar):
-    length = polar[0]
-    radian = polar[1]
-    return (length * cos(radian), length * sin(radian))
-
 def exercise_2_29():
     print(to_cartesian((15, degree_to_radian(37))))
 
@@ -140,5 +135,47 @@ def exercise_2_41():
     print(f"toe = {radian_to_degree(atan(1))}")
     print(f"tip= {90 -radian_to_degree(atan(1/3)) - radian_to_degree(atan(1))}")
 
-exercise_2_41()
+
+
+
+def to_cartesian(polar):
+    length = polar[0]
+    radian = polar[1]
+    return (length * cos(radian), length * sin(radian))
+
+def to_polar(cartesian):
+    return (length(cartesian), atan2(cartesian[1], cartesian[0]))
+
+def rotate(angle, vectors):
+    polar_vectors = [to_polar(v) for v in vectors]
+    return [to_cartesian((l, radians + angle)) for l, radians in polar_vectors]
+
+
+def exercise_2_42():
+    dino_vectors = [(6, 4), (3, 1), (1, 2), (-1, 5), (-2, 5), (-3, 4), (-4, 4),
+                    (-5, 3), (-5, 2), (-2, 2), (-5, 1), (-4, 0), (-2, 1), (-1, 0), (0, -3),
+                    (-1, -4), (1, -4), (2, -3), (1, -2), (3, -1), (5, 1)
+                    ]
+
+    rotated = rotate(pi, dino_vectors)
+    moved = translate((8, 8), rotated)
+    rotated_2 = rotate(pi, moved)
+    moved_2 = translate((8, 8), rotated_2)
+    draw(Polygon(*dino_vectors, color=blue),
+                Polygon(*rotated, color=red),
+                Polygon(*moved, color=green),
+                Polygon(*rotated_2, color=purple),
+                 Polygon(*moved_2, color=black),
+         nice_aspect_ratio=False)
+
+
+def regular_polygon(n):
+    radian_step = (2*pi)/n
+    polars = [(1, radian_step * i) for i in range(0, n)]
+    return [to_cartesian(p) for p in polars]
+
+def exercise_2_43():
+    draw(Polygon(*regular_polygon(7)))
+
+exercise_2_43()
 
