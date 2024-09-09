@@ -1,6 +1,7 @@
 from draw3d import *
+from draw2d import *
 from vectors import *
-from math import sin, cos, pi, ceil, floor
+from math import sin, cos, pi, ceil, floor,acos
 
 def exercise_3_1():
     v = (-1, -2, 2)
@@ -64,12 +65,14 @@ def exercise_3_7():
     draw3d(Points3D(u, v, w))
 
 def vector_generator(n):
+    # combination with repetition
     for x in range(1, n):
         for y in range(1, x + 1):
             for z in range(1, y + 1):
                 yield (1.0* x, 1.0* y, 1.0 * z)
 
 def vector_generator_2(n):
+    # combination with repetition
     for x in range(1, n):
         for y in range(x, n):
             for z in range(y, n):
@@ -115,9 +118,72 @@ def exercise_3_10_2():
     print(f"scalar = {1/v_len}, length({n_v}) = {length(n_v)}")
     # scalar =0.4082482904638631, length((-0.4082482904638631, -0.4082482904638631, 0.8164965809277261)) = 1.0
 
+def exercise_3_15():
+    u = (3, 0)
+    v_length = 7
+    vs = [(v_length * cos(i), v_length * sin(i)) for i in range(1, 4)]
+    for v in vs:
+        print(f"length({u}) = {length(u)}, length({v}) = {length(v)}")
+        print(f"dot({u}, {v}) = {dot(u, v)}")
+    draw2d(Points2D(*vs))
 
-#print(length((99, 90, 70)))
-exercise_3_10_2()
+def degree_to_radian(degree):
+    return (degree * pi) / 180
+
+def radian_to_degree(radian):
+    return (radian * 180) / pi
+
+def exercise_3_16():
+    u_length = 3.61
+    v_length = 1.44
+    radiant = degree_to_radian(101.3)
+    print(f"dot(u, v) = {u_length * v_length * cos(radiant)}")
+
+def exercise_3_17():
+    u = (3, 4)
+    v = (4, 3)
+
+    polar_u = to_polar(u)
+    polar_v = to_polar(v)
+
+    print(f"diff: {polar_u[1] - polar_v[1]}")
+
+def exercise_3_18():
+    u = (1, 1, 1)
+    v = (-1, -1, 1)
+
+    dp = dot(u, v)
+    radiant = acos(dp / (length(u) * length(v)))
+    print(f"angle between {u} {v} is: { radian_to_degree(radiant) } ")
+
+def cross(u, v):
+    ux, uy, uz = u
+    vx, vy, vz = v
+    return (uy*vz - uz*vy, uz*vx - ux*vz, ux * vy - uy*vx)
 
 
+def exercise_3_22():
+    u = (1, -2, 1)
+    v = (-6, 12, -6)
+    print(cross(u, v))
+    draw3d(Arrow3D(u, color=red), Arrow3D(v, color=green))
 
+def exercise_3_24():
+    u = (1, 0, 1)
+    v = (-1, 0, 0)
+    w = cross(u, v)
+    print(f"w= {w}")
+    draw3d(Arrow3D(u, color=red), Arrow3D(v, color=blue), Arrow3D(w, color=green))
+
+def exercise_3_27():
+    top = (0, 0, 1)
+    bottom = (0, 0, -1)
+    x_y_plane = [(1, 0, 0), (0, 1, 0), (-1, 0, 0), (0, -1, 0)]
+
+    edges = [Segment3D(top, v) for v in x_y_plane] + \
+            [Segment3D(bottom, v) for v in x_y_plane] + \
+            [Segment3D(x_y_plane[i], x_y_plane[(i + 1) % 4]) for i in range(0, 4)]
+    draw3d(*edges)
+
+
+exercise_3_27()
