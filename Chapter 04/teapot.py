@@ -27,7 +27,7 @@ def load_polygons():
 
 def triangulate(poly):
     if len(poly) < 3:
-        raise ArgumentException("polygons must have at least 3 vertices")
+        raise TypeError("polygons must have at least 3 vertices")
     # elif len(poly) == 3:
     #     return [poly]
     else:

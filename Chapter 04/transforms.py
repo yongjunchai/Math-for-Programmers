@@ -83,3 +83,11 @@ v = (1,-2,-2)
 
 def transform_standard_basis(transform):
     return transform((1,0,0)), transform((0,1,0)), transform((0,0,1))
+
+
+def linear_combination(scalars,*vectors):
+    scaled = [scale(s,v) for s,v in zip(scalars,vectors)]
+    return add(*scaled)
+
+def multiply_matrix_vector(matrix, vector):
+    return linear_combination(vector, *zip(*matrix))
