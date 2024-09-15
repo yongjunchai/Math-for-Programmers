@@ -186,4 +186,93 @@ def exercise_3_27():
     draw3d(*edges)
 
 
-exercise_3_27()
+def cross_1():
+    u = (1, 0, 0)
+    v = (0, 1, 0)
+    w = cross(u, v)
+
+    u2 = (2, 0, 0)
+    v2 = (0, 2, 0)
+    w2 = cross(u2, v2)
+
+    u3 = (3, 0, 0)
+    v3 = (0, -3, 0)
+    w3 = cross(u3, v3)
+
+    print(f"w= {w}")
+    print(f"w2= {w2}")
+    print(f"w3= {w3}")
+    draw3d(Arrow3D(u, color=red), Arrow3D(v, color=green), Arrow3D(w, color=blue),
+                   Arrow3D(u2, color=red), Arrow3D(v2, color=green), Arrow3D(w2, color=blue),
+                   Arrow3D(u3, color=red), Arrow3D(v3, color=green), Arrow3D(w3, color=blue),
+           )
+
+def cross_2():
+    u = (1, 0, 0)
+    v = (0, 1, 0)
+    w = cross(u, v)
+    ww = cross(v, u)
+
+    u2 = (2, 0, 0)
+    v2 = (0, 2, 0)
+    w2 = cross(u2, v2)
+    w22 = cross(v2, u2)
+
+    u3 = (3, 0, 0)
+    v3 = (0, -3, 0)
+    w3 = cross(u3, v3)
+    w33 = cross(v3, u3)
+
+    print(f"w= {w}")
+    print(f"ww= {ww}")
+    print(f"w2= {w2}")
+    print(f"w22= {w22}")
+    print(f"w3= {w3}")
+    print(f"w33= {w33}")
+    draw3d(Arrow3D(u, color=red), Arrow3D(v, color=green), Arrow3D(w, color=blue), Arrow3D(ww, color=black),
+                   Arrow3D(u2, color=red), Arrow3D(v2, color=green), Arrow3D(w2, color=blue),Arrow3D(w22, color=purple),
+                   Arrow3D(u3, color=red), Arrow3D(v3, color=green), Arrow3D(w3, color=blue), Arrow3D(w33, color=gray),
+           )
+
+
+
+def subtract_test():
+    u = (2, 0, 0)
+    v = (0, 2, 0)
+    w = subtract(u, v)
+    print(f"u = {u}, v = {v}, u - v = {w}")
+    draw3d(Points3D(u, color=red), Points3D(v, color=green), Points3D(w, color=blue),
+           Arrow3D(u, color=red), Arrow3D(v, color=green), Arrow3D(w, color=blue), Arrow3D(u, tail=v, color=purple)
+           )
+
+
+def draw_oct():
+    octahedron = [
+        [(1, 0, 0), (0, 1, 0), (0, 0, 1)],
+        [(1, 0, 0), (0, 0, -1), (0, 1, 0)],
+        [(1, 0, 0), (0, 0, 1), (0, -1, 0)],
+        [(1, 0, 0), (0, -1, 0), (0, 0, -1)],
+        [(-1, 0, 0), (0, 0, 1), (0, 1, 0)],
+        [(-1, 0, 0), (0, 1, 0), (0, 0, -1)],
+        [(-1, 0, 0), (0, -1, 0), (0, 0, 1)],
+        [(-1, 0, 0), (0, 0, -1), (0, -1, 0)],
+    ]
+    for i in range(0, len(octahedron)):
+        print(octahedron[i])
+        u = subtract(octahedron[i][1], octahedron[i][0])
+        v = subtract(octahedron[i][2], octahedron[i][0])
+        cross_u_v = cross(u, v)
+        print(u, v, cross_u_v)
+        draw3d(Points3D(octahedron[i][0], color=red),
+               Points3D(octahedron[i][1], color=green),
+               Points3D(octahedron[i][2], color=blue),
+               Arrow3D(u, color=red),
+               Arrow3D(v, color=green),
+               Arrow3D(cross_u_v, color=blue)
+               )
+
+
+draw_oct()
+
+#exercise_3_24()
+#subtract_test()
