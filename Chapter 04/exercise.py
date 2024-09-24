@@ -5,7 +5,7 @@ from PIL.Image import preinit
 from vectors import *
 from teapot import *
 from draw_model import *
-
+from draw2d import *
 
 def translate_by(translation):
     def trans(vec):
@@ -98,12 +98,22 @@ def stretch_x_by(scalar):
         return (scalar * x, y, z)
     return new_function
 
-
 def exercise_4_9():
     draw_model(polygon_map(stretch_x_by(1.5), load_triangles()))
 
+def exercise_4_13():
+    u = (5, 3)
+    v = (-2, 1)
 
+    mid = scale(0.5, add(u, v))
+    print(f"u= {u}, v = {v}, mid = {mid}")
+    draw2d(Arrow2D(u, color=red), Arrow2D(v, color=green), Segment2D(u, v, color=blue),
+           Points2D(mid, color=black))
 
+def exercise_4_14():
+    points = [(x, y) for x in range(0, 6) for y in range(0, 6)]
+    transformed = [(v[0]**2, v[1]**2) for v in points]
+    draw2d(Points2D(*points), Points2D(*transformed, color=green))
 
-exercise_4_9()
+exercise_4_14()
 
