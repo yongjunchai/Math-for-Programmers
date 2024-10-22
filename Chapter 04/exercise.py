@@ -1,11 +1,33 @@
-from audioop import reverse
-
-from PIL.Image import preinit
-
-from vectors import *
+from hypothesis import given
+from hypothesis import strategies as st
 from teapot import *
 from draw_model import *
 from draw2d import *
+
+
+
+def length(v):
+    return sqrt(sum([coord ** 2 for coord in v]))
+
+def add(*vectors):
+    return tuple(map(sum, zip(*vectors)))
+
+def scale(scalar, v):
+    return tuple(scalar * coord for coord in v)
+
+def to_cartesian(polar_vector):
+    length, angle = polar_vector[0], polar_vector[1]
+    return (length * cos(angle), length * sin(angle))
+
+def rotate(angle, vectors):
+    polars = [to_polar(v) for v in vectors]
+    return [to_cartesian((l, a + angle)) for l, a in polars]
+
+def to_polar(vector):
+    x, y = vector[0], vector[1]
+    angle = atan2(y, x)
+    return (length(vector), angle)
+
 
 def translate_by(translation):
     def trans(vec):
@@ -115,5 +137,72 @@ def exercise_4_14():
     transformed = [(v[0]**2, v[1]**2) for v in points]
     draw2d(Points2D(*points), Points2D(*transformed, color=green))
 
-exercise_4_14()
+def reflect_x(vector):
+    return vector[0], -vector[1]
+
+def draw_reflection_add(vector1, vector2, f):
+    """
+    draw the two input vectors and the result vector returned by f.
+    Also, the refection across the x-axis of these three vectors
+    :param vector1: an input 2d vector
+    :param vector2: an input 2d vector
+    :param f: a function that accept two input vectors and return a new vector
+    :return:
+    """
+    result = f(vector1, vector2)
+    vector1_r_x = reflect_x(vector1)
+    vector2_r_x = reflect_x(vector2)
+    result_r_x = reflect_x(result)
+    draw2d(Arrow2D(vector1, color=red), Arrow2D(vector2, color=red), Arrow2D(result, color=green),
+           Arrow2D(vector1_r_x, color=blue), Arrow2D(vector2_r_x, color=blue), Arrow2D(result_r_x, color=black))
+
+
+def draw_reflection_scale(vector1, vector2, f):
+    """
+    draw the two input vectors and the result vector returned by f.
+    Also, the refection across the x-axis of these three vectors
+    :param vector1: an input 2d vector
+    :param vector2: an input 2d vector
+    :param f: a function that accept two input vectors and return a new vector
+    :return:
+    """
+    vector1_r_x = reflect_x(vector1)
+    vector2_r_x = reflect_x(vector2)
+    v1_scaled = f(vector1)
+    v2_scaled = f(vector2)
+    v1_scaled_r_x = reflect_x(v1_scaled)
+    v2_scaled_r_x = reflect_x(v2_scaled)
+    draw2d(Arrow2D(vector1, color=red), Arrow2D(vector2, color=red), Arrow2D(v1_scaled, color=green), Arrow2D(v2_scaled, color=green),
+           Arrow2D(vector1_r_x, color=blue), Arrow2D(vector2_r_x, color=blue), Arrow2D(v1_scaled_r_x, color=black), Arrow2D(v2_scaled_r_x, color=black))
+
+
+def exercise_4_16():
+    scalar = 3
+    scale_by_3 = scale_by(scalar)
+    v1 = (2,3)
+    v2 = (1, 4)
+    # draw_reflection(v1, v2, add)
+    draw_reflection_scale(v1, v2, scale_by_3)
+
+def liner_combination(scalars, *vectors):
+    return add(* [scale(s, vec) for s, vec in zip(scalars, vectors)])
+
+def exercise_4_19():
+    r = liner_combination([1, 2, 3], (1, 0, 0), (0, 1, 0), (0, 0, 1))
+    print(r)
+
+def transform_standard_basis(transform):
+    return transform((1, 0, 0)), transform((0, 1, 0)), transform((0, 0, 1))
+
+def exercise_4_20():
+    t = rotate_x_by(pi/2)
+    print(transform_standard_basis(t))
+
+def exercise_4_21():
+
+    pass
+
+
+exercise_4_20()
+
 
