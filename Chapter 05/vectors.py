@@ -20,6 +20,8 @@ def length(v):
     return sqrt(sum([coord ** 2 for coord in v]))
 
 def dot(u,v):
+    if len(u) != len(v):
+        raise Exception("length of two input vector must be of the same.")
     return sum([coord1 * coord2 for coord1,coord2 in zip(u,v)])
 
 def distance(v1,v2):
