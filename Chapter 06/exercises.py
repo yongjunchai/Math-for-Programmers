@@ -558,7 +558,60 @@ def exercise_6_20():
     for img in linear_combo:
         img.image().show()
 
-# run_test_against_linear_rules()
+image_size = (300, 300)
+total_pixels = image_size[0] * image_size[1]
+square_count = 30
+square_width = 10
+
+def ij(n):
+    return n // image_size[0], n % image_size[1]
+
+def to_lowres_grayscale(img: ImageVector):
+    matrix = [
+        [0 for _ in range(0, square_count)]
+        for _ in range(0, square_count)
+    ]
+    weight_factor = 1.0 / (square_width * square_width * 3)
+    for (n, p) in enumerate(img.pixels):
+        i, j = ij(n)
+        matrix[i // square_width][j // square_width] += sum(p)
+    for i in range(0, square_count):
+        for j in range(0, square_count):
+            matrix[i][j] *= weight_factor
+    return matrix
+
+def to_image_from_lowres_grayscale(matrix):
+    def get_brightness_from_lowres(m, n):
+        i, j = ij(n)
+        return m[i // square_width][j // square_width]
+    triple = lambda x : (x, x, x)
+    return ImageVector([ triple(get_brightness_from_lowres(matrix, n))  for n in range(0, total_pixels)])
+
+def to_image(matrix):
+    triple = lambda x : (x, x, x)
+    old_size = ImageVector.size
+    ImageVector.size = (square_count, square_count)
+    image = ImageVector([triple(matrix[i][j])  for j in range(0, square_count) for i in range(0, square_count)])
+    ImageVector.size = old_size
+    return image
+
+def exercise_6_40():
+    images = ["inside.JPG", "outside.JPG"]
+    for img in images:
+        old_size = image_size
+        new_size = (square_count, square_count)
+        ImageVector.size = old_size
+        image = ImageVector(img)
+        image.image().show()
+        matrix = to_lowres_grayscale(image)
+        lowres: ImageVector = to_image_from_lowres_grayscale(matrix)
+        lowres.image().show()
+        ImageVector.size = new_size
+        mimage: ImageVector = to_image(matrix)
+        mimage.image().show()
+
+
+exercise_6_40()
 
 
 
