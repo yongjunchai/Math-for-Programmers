@@ -254,8 +254,32 @@ def exercise_7_12():
     print(segment_checks(s1, s2))
 
 
-main()
-# exercise_7_12()
+def plane_equation(p1, p2, p3):
+    parallel1 = vectors.subtract(p1, p2)
+    parallel2 = vectors.subtract(p2, p3)
+    a, b, c = vectors.cross(parallel1, parallel2)
+    d = vectors.dot((a, b, c), p3)
+    return a, b, c, d
+
+def exercise_7_18():
+    print(plane_equation((1, 1, 1), (3, 0, 0), (0, 0, 3)))
+
+def exercise_7_25():
+    matrix = np.array(((0, 0, 0, 0, 1), (0, 1, 0, 0, 0), (0, 0, 0, 1, 0), (1, 0, 0, 0, 0), (1, 1, 1, 0, 0)))
+    vector = np.array((3, 1, -1, 0, -2))
+    print(np.linalg.solve(matrix, vector))
+
+
+def exercise_7_26():
+    matrix = np.array(((1, 1, -1), (0, 2, -1), (1, 0, 1)))
+    vector = np.array((-1, 3, 2))
+    r_matrix = np.linalg.inv(matrix)
+    print(f"result by the revert identity matrix: {np.matmul(r_matrix, vector)}")
+    print(f"result by the solver of numpy: {np.linalg.solve(matrix, vector)}")
+
+
+# main()
+exercise_7_26()
 
 
 
