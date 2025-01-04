@@ -278,8 +278,35 @@ def exercise_7_26():
     print(f"result by the solver of numpy: {np.linalg.solve(matrix, vector)}")
 
 
-# main()
-exercise_7_26()
+def figure_7_27():
+    matrix = np.array(((1, -1), (1, 1)))
+    vector = np.array((4, 2))
+
+    print(f"{np.linalg.solve(matrix, vector)}")
+
+def exercise_7_27():
+    matrix = np.array((
+        (10, 3),
+        (1,  2)))
+    vector = np.array((5, 5))
+    linear_combination = np.linalg.solve(matrix, vector)
+    print(f"linear combination: {linear_combination}")
+    print(f"result: {matrix} * {linear_combination} = {np.matmul(matrix, linear_combination)}")
+
+def exercise_7_28():
+    matrix = np.array((
+        (0, 0, 1, 0),
+        (0, -2, -2, 0),
+        (1, -1, 0, -2),
+        (1, -1, 2, 1)
+    ))
+    vector = np.array((3, 0, 6, 9))
+    linear_combination = np.linalg.solve(matrix, vector)
+    print(f"linear combination: {linear_combination}")
+    print(f"result: {matrix} * {linear_combination} = {np.matmul(matrix, linear_combination)}")
+main()
+# exercise_7_28()
+# figure_7_27()
 
 
 
